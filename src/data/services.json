@@ -1,0 +1,11 @@
+[
+  {
+    "id": 1,
+    "name": "Consulta Médica General",
+    "description": "Revisión de rutina y diagnóstico básico.",
+    "duration": 30,
+    "price": 50000,
+    "category": "salud",
+    "available": true
+  }
+]
