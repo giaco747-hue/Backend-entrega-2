@@ -39,28 +39,33 @@ router.get('/:sid', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const newService = req.body; 
+        const { name, description, duration, price, category, available } = req.body;
         
-        const createdService = await serviceManager.addService(newService);
-        
-        
-        if (createdService.error) {
-            return res.status(400).json({ error: createdService.error }); 
+        if (!name || !description || duration === undefined || price === undefined || !category || available === undefined) {
+            return res.status(400).json({ 
+                error: 'Faltan campos obligatorios. Se requiere: name, description, duration, price, category y available.' 
+            });
         }
 
-        res.status(201).json(createdService); 
+        const createdService = await serviceManager.addService(req.body);
+        res.status(201).json(createdService);
     } catch (error) {
         res.status(500).json({ error: 'Error al crear el servicio' });
     }
 });
 
-
 router.put('/:sid', async (req, res) => {
     try {
         const id = parseInt(req.params.sid);
-        const updateData = req.body;
+        const { name, description, duration, price, category, available } = req.body;
 
-        const updatedService = await serviceManager.updateService(id, updateData);
+        if (!name || !description || duration === undefined || price === undefined || !category || available === undefined) {
+            return res.status(400).json({ 
+                error: 'Para actualizar se requieren todos los campos: name, description, duration, price, category y available.' 
+            });
+        }
+
+        const updatedService = await serviceManager.updateService(id, req.body);
 
         if (!updatedService) {
             return res.status(404).json({ error: 'Servicio no encontrado' });
